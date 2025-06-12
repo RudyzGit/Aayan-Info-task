@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 
 function App() {
-  const [msg, setMsg] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch('https://backend.local/api')
+    // This fetch hits /api on NGINX, which reverse proxies to Node.js backend
+    fetch('/api')
       .then(res => res.json())
-      .then(data => setMsg(data.message));
+      .then(data => setMessage(data.message))
+      .catch(err => console.error('Error fetching from backend:', err));
   }, []);
 
   return (
     <div>
-      <h1>Frontend App</h1>
-      <p>{msg}</p>
+      <h1>React Frontend</h1>
+      <p>Message from backend: {message}</p>
     </div>
   );
 }
